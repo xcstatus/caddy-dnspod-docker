@@ -15,8 +15,11 @@ jobs:
     - name: Get Caddy version
       id: get-version
       run: |
-        CURRENT_VERSION=$(curl -sL https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r '.tag_name')
-        echo "version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+        RAW_VERSION=$(curl -sL https://api.github.com/repos/caddyserver/caddy/releases/latest | jq -r '.tag_name')
+        # 去除版本号前的v字符
+        CLEAN_VERSION="${RAW_VERSION#v}
+        # 输出标准化版本号
+        echo "version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
